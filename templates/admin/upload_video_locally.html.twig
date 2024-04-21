@@ -1,0 +1,27 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block mainadmin %}
+
+            <h2>Upload a video</h2>
+            {{ form_errors(form.uploaded_video) }}
+
+            {{ form_start(form) }}
+                <div class="form-group">
+                    <div class="custom-file">
+                        {{ form_widget(form.uploaded_video) }}
+                            <label class="custom-file-label" for="video_uploaded_video">Choose file</label>
+                    </div> 
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {{ form_end(form) }}
+
+{% endblock %}
+{% block customjavascripts %}
+<script>
+    $('input[type="file"]').change(function (e) {
+        var fileName = e.target.files[0].name;
+        // console.log(e.target.files[0]);
+        $('.custom-file-label').html(fileName);
+    });
+</script>
+{% endblock %}

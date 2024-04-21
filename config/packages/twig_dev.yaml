@@ -1,0 +1,8 @@
+imports:
+- { resource: twig.yaml }
+
+
+twig:
+ globals:
+    upload_route_name: 'upload_video_locally'
+    # upload_route_name: 'upload_video_by_vimeo'

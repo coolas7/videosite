@@ -1,0 +1,74 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block mainadmin %}
+
+            <h2>Upload a videoo</h2>
+            <div class="app-user-vimeo-token" data-user-token="{{ app.user.vimeoApiKey }}"></div>
+
+            <form method="POST" id="form-upload" action="#" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="custom-file">
+                            <input type="file" name="file_data" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div> 
+                </div>
+                <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+            </form>
+
+{% endblock %}
+{% block customjavascripts %}
+{{ parent() }}
+<script>
+
+    var userVimeoToken = null;
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var userVimeoTokenDiv = document.querySelector('.app-user-vimeo-token');
+        userVimeoToken = userVimeoTokenDiv.dataset.userToken;
+    });
+
+
+
+    $('input[type="file"]').change(function (e) {
+
+        document.getElementById("submit-button").disabled = true;
+        document.getElementById("submit-button").innerHTML = 'Wait...';
+
+
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+
+        var fileNameNoExt = fileName.replace(/\.[^.]+$/, '');
+
+        var data = "upload.aproach=post&name="+fileNameNoExt
+        +"&privacy.view=anybody&upload.redirect_url={{url('upload_video_by_vimeo')}}?videoName%3D"
+        +fileNameNoExt;
+
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("readystatechange", function() {
+
+            if (this.readyState === 4)
+            {
+                var myObj = JSON.parse(this.responseText);
+
+                document.getElementById("submit-button").disabled = false;
+                document.getElementById("submit-button").innerHTML = 'Click to upload';
+
+                document.getElementById("form-upload").action = myObj.upload.upload_link;
+
+
+            }
+
+        });
+
+        xhr.open("POST", "https://api.vimeo.com/me/videos");
+        xhr.setRequestHeader("Accept", "application/vnd.vimeo.*+json;version=3.4");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("Authorization", "Bearer " + userVimeoToken);
+        xhr.send(data);
+
+    });
+</script>
+{% endblock %}
