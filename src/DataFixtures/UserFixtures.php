@@ -43,6 +43,7 @@ class UserFixtures extends Fixture
             ['Vardas2', 'Pavarde2', '2el@pastas.lt', '123456', 'hjd8dehdh', ['ROLE_USER']],
             ['Vardas3', 'Pavarde3', '3el@pastas.lt', '1234567', 'hjd8dehdh', ['ROLE_ADMIN']],
             ['Vardas4', 'Pavarde4', '4el@pastas.lt', '55555', 'hjd8dehdh', ['ROLE_USER']],
+            // ['pirkejas', 'buyer', 'buyer@pastas.lt', '123456789', 'hjd8dehdh', ['ROLE_USER']],
         ];
     }
 }
